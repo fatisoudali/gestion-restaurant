@@ -13,7 +13,15 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::latest()->get();
+
+        $categories = Category::latest()->get()->map(function ($category) {
+        return [
+            'id' => $category->id,
+            'name' => $category->name,
+            'image' => $category->getFirstMediaUrl('images', 'thumb'),
+        ];
+        });
+
         return Inertia::render('Categories/Index', [
             'categories' => $categories,
         ]);

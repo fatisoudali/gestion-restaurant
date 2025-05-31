@@ -1,4 +1,3 @@
-import React from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
@@ -15,7 +14,7 @@ interface Props  {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Categories',
+        title: 'Les Categorés',
         href: '/categories',
     },
 ];
@@ -23,7 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Index({ categories }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Categories" />
+            <Head title="Les categorés" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     {categories.map((category) => (

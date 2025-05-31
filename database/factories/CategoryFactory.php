@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,15 @@ class CategoryFactory extends Factory
         return [
             'name' => $this->faker->unique()->word(),
             'description' => $this->faker->sentence(rand(5, 15)),
-            'image' => $this->faker->imageUrl(640, 480, 'food', true, 'Category'),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Category $cat): void {
+            $cat->addMedia(database_path('factories/media/'.random_int(1, 5).'.jpg'))
+                ->preservingOriginal()
+                ->toMediaCollection('images');
+        });
     }
 }

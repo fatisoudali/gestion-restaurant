@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Plat extends Model
+class Plat extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\PlatFactory> */
     use HasFactory;
+    use InteractsWithMedia;
 
     public function category()
     {
@@ -18,6 +21,11 @@ class Plat extends Model
     public function lignes()
     {
         return $this->hasMany(LineCommande::class);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('images');
     }
 
 }

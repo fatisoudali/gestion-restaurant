@@ -14,7 +14,7 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Categories',
+        title: 'Les Categorés',
         href: '/categories',
         icon: Folder,
     },

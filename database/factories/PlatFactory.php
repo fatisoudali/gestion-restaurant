@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\Plat;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +23,15 @@ class PlatFactory extends Factory
             'name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
             'price' => $this->faker->randomFloat(2, 5, 100),
-            'image' => $this->faker->imageUrl(640, 480, 'food', true, 'Plat'),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Plat $plat): void {
+            $plat->addMedia(database_path('factories/media/'.random_int(1, 5).'.jpg'))
+                ->preservingOriginal()
+                ->toMediaCollection('images');
+        });
     }
 }
