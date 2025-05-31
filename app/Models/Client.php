@@ -9,4 +9,9 @@ class Client extends Model
 {
     /** @use HasFactory<\Database\Factories\ClientFactory> */
     use HasFactory;
+
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class);
+    }
 }
