@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Client;
 use App\Models\Commande;
 use App\Models\LineCommande;
+use App\Models\Paiement;
 use App\Models\Plat;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -34,5 +35,7 @@ class DatabaseSeeder extends Seeder
         $commandes = Commande::factory(30)->recycle($Clients)->create();
 
         LineCommande::factory(50)->recycle($commandes, $plats)->create();
+
+        Paiement::factory(30)->recycle($commandes)->create();
     }
 }
