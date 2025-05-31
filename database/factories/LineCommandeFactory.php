@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Commande;
+use App\Models\Plat;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,12 @@ class LineCommandeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'commande_id' => Commande::factory(),
+            'plat_id' => Plat::factory(),
+            'quantite' => $qty = $this->faker->numberBetween(1, 5),
+            'prix_unitaire' => $prixUnit = $this->faker->randomFloat(2, 5, 50),
+            'total' => $qty * $prixUnit,
+            'notes' => $this->faker->optional()->sentence(),
         ];
     }
 }

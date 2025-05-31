@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\Commande;
+use App\Models\LineCommande;
 use App\Models\Plat;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -30,8 +31,8 @@ class DatabaseSeeder extends Seeder
 
         $Clients = Client::factory(10)->create();
 
-        $commandes = Commande::factory(30)
-            ->recycle($Clients)
-            ->create();
+        $commandes = Commande::factory(30)->recycle($Clients)->create();
+
+        LineCommande::factory(50)->recycle($commandes, $plats)->create();
     }
 }

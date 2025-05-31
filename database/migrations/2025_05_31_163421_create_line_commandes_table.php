@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('line_commandes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('commande_id')->constrained('commandes')->onDelete('cascade');
+            $table->foreignId('plat_id')->constrained('plats')->onDelete('cascade');
+            $table->integer('quantite')->default(1);
+            $table->decimal('prix_unitaire', 10, 2);
+            $table->decimal('total', 10, 2);
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }
