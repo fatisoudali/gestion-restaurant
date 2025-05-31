@@ -14,4 +14,9 @@ class Commande extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    public function lignes()
+    {
+        return $this->hasMany(LineCommande::class);
+    }
 }
