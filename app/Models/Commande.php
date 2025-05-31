@@ -19,4 +19,15 @@ class Commande extends Model
     {
         return $this->hasMany(LineCommande::class);
     }
+
+    public function paiements()
+    {
+        return $this->hasOne(Paiement::class);
+    }
+
+    public function facture()
+    {
+        return $this->hasOne(Facture::class);
+    }
+    
 }

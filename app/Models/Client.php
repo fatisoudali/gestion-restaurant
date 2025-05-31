@@ -14,4 +14,9 @@ class Client extends Model
     {
         return $this->hasMany(Commande::class);
     }
+
+    public function factures()
+    {
+        return $this->hasMany(Facture::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\Commande;
+use App\Models\Facture;
 use App\Models\LineCommande;
 use App\Models\Paiement;
 use App\Models\Plat;
@@ -37,5 +38,7 @@ class DatabaseSeeder extends Seeder
         LineCommande::factory(50)->recycle($commandes, $plats)->create();
 
         Paiement::factory(30)->recycle($commandes)->create();
+
+        Facture::factory(30)->recycle($commandes, $Clients)->create();
     }
 }
