@@ -9,4 +9,10 @@ class Plat extends Model
 {
     /** @use HasFactory<\Database\Factories\PlatFactory> */
     use HasFactory;
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 }
