@@ -13,8 +13,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::resource('categories', CategoryController::class)
-        ->except(['show', 'edit', 'update', 'destroy']);
+    Route::resource('categories', CategoryController::class);
 });
 
 require __DIR__.'/settings.php';

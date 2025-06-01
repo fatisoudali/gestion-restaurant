@@ -32,7 +32,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Categories/Create');
     }
 
     /**
@@ -40,7 +40,24 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        $category = Category::create([
+            'name' => $validated['name'],
+            'description' => $validated['description'] ?? null,
+        ]);
+
+        if ($request->hasFile('image')) {
+            $category
+                ->addMediaFromRequest('image')
+                ->toMediaCollection('images');
+        }
+
+        return redirect()->route('categories.index')->with('success', 'Catégorie créée avec succès.');
     }
 
     /**

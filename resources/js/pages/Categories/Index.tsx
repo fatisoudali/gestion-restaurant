@@ -24,6 +24,9 @@ export default function Index({ categories }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Les categorés" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+                <div className='flex justify-end p-4'>
+                    <Link href={route('categories.create')} className='py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700'>creér un categoré</Link>
+                </div>
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     {categories.map((category) => (
                         <Link
@@ -31,8 +34,7 @@ export default function Index({ categories }: Props) {
                             href="#"
                             className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border"
                         >
-                            {category.image ? (
-                                <img
+                            {category.image ? (                                <img
                                     src={category.image}
                                     alt={category.name}
                                     className="absolute inset-0 size-full object-cover"
