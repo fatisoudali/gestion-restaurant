@@ -73,7 +73,16 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        return Inertia::render('Categories/Edit', [
+            'category' => [
+                'id' => $category->id,
+                'name' => $category->name,
+                'description' => $category->description,
+                'image' => $category->getFirstMediaUrl('images'),
+            ],
+        ]);
     }
 
     /**
@@ -81,7 +90,27 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        $category->update([
+            'name' => $validated['name'],
+            'description' => $validated['description'] ?? null,
+        ]);
+
+        if ($request->hasFile('image')) {
+            $category->clearMediaCollection('images');
+            $category
+                ->addMediaFromRequest('image')
+                ->toMediaCollection('images');
+        }
+
+        return redirect()->route('categories.index')->with('success', 'Catégorie mise à jour avec succès.');
     }
 
     /**

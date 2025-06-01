@@ -1,8 +1,8 @@
-import { toast } from "sonner"
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 interface Category {
     id: number;
@@ -30,7 +30,7 @@ export default function Index({ categories, flash }: Props) {
 
     useEffect(() => {
         if (props.flash?.success) {
-            toast(props.flash.success,);
+            toast(props.flash.success);
         }
     }, [props.flash, toast]);
 
@@ -66,13 +66,22 @@ export default function Index({ categories, flash }: Props) {
 
                             <div className="bg-opacity-50 absolute right-0 bottom-0 left-0 flex items-center justify-between bg-black p-2 text-white">
                                 <span>{category.name}</span>
-                                <button
-                                    onClick={() => handleDelete(category.id)}
-                                    disabled={processing}
-                                    className="ml-2 rounded bg-red-600 px-2 py-1 text-sm hover:bg-red-700"
-                                >
-                                    Supprimer
-                                </button>
+                                <div>
+                                    <Link
+                                        href={route('categories.edit', category.id)}
+                                        className="ml-2 rounded bg-green-600 px-2 py-1 text-sm hover:bg-green-700"
+                                    >
+                                        Modifier
+                                    </Link>
+
+                                    <button
+                                        onClick={() => handleDelete(category.id)}
+                                        disabled={processing}
+                                        className="ml-2 rounded bg-red-600 px-2 py-1 text-sm hover:bg-red-700"
+                                    >
+                                        Supprimer
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     ))}
