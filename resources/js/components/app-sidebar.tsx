@@ -18,6 +18,11 @@ const mainNavItems: NavItem[] = [
         href: '/categories',
         icon: Folder,
     },
+    {
+        title: 'Les Plats',
+        href: '/plats',
+        icon: Folder,
+    },
 ];
 
 
