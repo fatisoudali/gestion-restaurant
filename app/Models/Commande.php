@@ -7,27 +7,37 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commande extends Model
 {
-    /** @use HasFactory<\Database\Factories\CommandeFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'client_id',
+        'status',         // Ex : 'en cours', 'terminée', 'annulée'
+        'total',          // Total de la commande
+        'notes',          // Notes optionnelles
+    ];
+
+    /**
+     * La commande appartient à un client.
+     */
     public function client()
     {
         return $this->belongsTo(Client::class);
     }
 
+    /**
+     * Une commande contient plusieurs lignes de commande.
+     */
     public function lignes()
     {
         return $this->hasMany(LineCommande::class);
     }
 
-    public function paiements()
+    /**
+     * Si tu veux lier une catégorie à la commande (optionnel).
+     * Supprime cette méthode si ce n'est pas nécessaire.
+     */
+    public function category()
     {
-        return $this->hasOne(Paiement::class);
+        return $this->belongsTo(Category::class);
     }
-
-    public function facture()
-    {
-        return $this->hasOne(Facture::class);
-    }
-    
 }

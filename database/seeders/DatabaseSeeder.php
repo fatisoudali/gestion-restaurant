@@ -35,7 +35,8 @@ class DatabaseSeeder extends Seeder
 
         $commandes = Commande::factory(30)->recycle($Clients)->create();
 
-        LineCommande::factory(50)->recycle($commandes, $plats)->create();
+        //LineCommande::factory(50)->recycle($commandes, $plats)->create();
+        LigneCommande::factory()->count(10)->create();
 
         Paiement::factory(30)->recycle($commandes)->create();
 

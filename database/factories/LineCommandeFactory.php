@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Commande;
 use App\Models\Plat;
+use App\Models\LigneCommande;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,10 +12,11 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class LineCommandeFactory extends Factory
 {
+    protected $model = LineCommande::class;
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @//return array<string, mixed>
      */
     public function definition(): array
     {

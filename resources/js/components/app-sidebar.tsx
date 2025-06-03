@@ -28,6 +28,11 @@ const mainNavItems: NavItem[] = [
         href: '/clients',
         icon: Folder,
     },
+     {
+        title: 'Les Commandes',
+        href: '/commande',
+        icon: Folder,
+    },
 ];
 
 
