@@ -11,12 +11,13 @@ import { Pencil, Trash } from 'lucide-react';
 
 interface Commande {
   id: number;
+  category_id: number;
   name: string;
-  category: {
-    name: string;
-  };
   price: number;
   quantity: number;
+   category: {
+    name: string;
+  };
 }
 
 interface Props {

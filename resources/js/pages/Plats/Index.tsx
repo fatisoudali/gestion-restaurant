@@ -52,7 +52,8 @@ export default function Index({ plats, flash }: Props) {
             <Head title="Les Plats" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex justify-end p-4">
-                    <Link href={route('plats.create')} className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+                    <Link href={route('plats.create')} 
+                    className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
                         Ajouter un plat
                     </Link>
                 </div>

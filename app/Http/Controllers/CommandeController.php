@@ -56,7 +56,7 @@ class CommandeController extends Controller
 
         return Inertia::render('Commande/Edit', [
             'commande' => $commande,
-            'categories' => $categories,
+            'categories' => Category::select('id', 'name')->get(),
         ]);
     }
 
