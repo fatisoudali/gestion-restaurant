@@ -23,6 +23,11 @@ const mainNavItems: NavItem[] = [
         href: '/plats',
         icon: Folder,
     },
+    {
+        title: 'Les Clients',
+        href: '/clients',
+        icon: Folder,
+    },
 ];
 
 
