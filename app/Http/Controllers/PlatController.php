@@ -36,10 +36,12 @@ class PlatController extends Controller
      */
     public function create()
     {
-         $categories = Category::all();
+          $categories = Category::select('id', 'name')->get(); 
+
     return Inertia::render('Plats/Create', [
         'categories' => $categories,
     ]);
+
     }
 
     /**
@@ -50,6 +52,7 @@ class PlatController extends Controller
     $validated = $request->validate([
         'name' => 'required|string|max:255',
         'price' => 'required|numeric',
+        'description' => 'nullable|string',
         'category_id' => 'required|exists:categories,id',
         'image' => 'required|image|max:2048',
     ]);
@@ -57,6 +60,7 @@ class PlatController extends Controller
     $plat = Plat::create([
         'name' => $validated['name'],
         'price' => $validated['price'],
+         'description' => $validated['description'] ?? null,
         'category_id' => $validated['category_id'],
     ]);
 
@@ -106,6 +110,7 @@ class PlatController extends Controller
     $validated = $request->validate([
         'name' => 'required|string|max:255',
         'price' => 'required|numeric',
+        'description' => $validated['description'] ?? null,
         'category_id' => 'required|exists:categories,id',
         'image' => 'nullable|image|max:2048',
     ]);

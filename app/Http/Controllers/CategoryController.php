@@ -56,6 +56,7 @@ class CategoryController extends Controller
                 ->addMediaFromRequest('image')
                 ->toMediaCollection('images');
         }
+         //$categories = Category::all(); 
 
         return redirect()->route('categories.index')->with('success', 'Catégorie créée avec succès.');
     }

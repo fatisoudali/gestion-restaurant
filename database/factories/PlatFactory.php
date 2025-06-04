@@ -21,7 +21,7 @@ class PlatFactory extends Factory
         return [
             'category_id' => Category::factory(),
             'name' => $this->faker->word(),
-            'description' => $this->faker->sentence(),
+            'description' => $this->faker->sentence(rand(5, 15)),
             'price' => $this->faker->randomFloat(2, 5, 100),
         ];
     }

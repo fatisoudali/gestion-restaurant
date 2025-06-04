@@ -108,9 +108,9 @@ export default function Create({ categories }: CreateProps) {
               className="w-full border rounded px-2 py-2"
             >
               <option value="">Sélectionner une catégorie</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
                 </option>
               ))}
             </select>
