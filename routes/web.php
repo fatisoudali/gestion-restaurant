@@ -37,6 +37,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/commande/{commande}/edit', [CommandeController::class, 'edit'])->name('commandes.edit');
     Route::put('/commande/{commande}', [CommandeController::class, 'update'])->name('commandes.update');
     Route::delete('/commande/{commande}', [CommandeController::class, 'destroy'])->name('commandes.destroy');
+    Route::get('/commande/{commande}', [CommandeController::class, 'show'])->name('commandes.show');
+
 
     Route::get('/facture', [FactureController::class, 'index'])->name('Facture.index');
 
