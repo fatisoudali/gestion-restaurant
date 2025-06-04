@@ -57,7 +57,7 @@ export default function FactureIndex({ factures }: Props) {
                 <TableCell>{facture.type === 'emporter' ? 'À emporter' : 'Sur place'}</TableCell>
                 <TableCell>{facture.numTable ?? '—'}</TableCell>
                 <TableCell>{facture.status}</TableCell>
-                <TableCell>{facture.total.toFixed(2)}</TableCell>
+                <TableCell>{Number(facture.total).toFixed(2)}</TableCell>
                 <TableCell className="flex gap-2">
                   <Link
                     href={route('factures.edit', facture.id)}
