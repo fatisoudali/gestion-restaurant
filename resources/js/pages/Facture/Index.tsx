@@ -1,80 +1,120 @@
-import React from 'react';
-import AppLayout from '@/layouts/app-layout';
-import { Head, Link } from '@inertiajs/react';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Pencil, Trash } from 'lucide-react';
-
-interface Client {
-  id: number;
-  name: string;
-}
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Eye, Trash } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 interface Facture {
   id: number;
-  client: Client;
+  client: {
+    name: string;
+  };
+  montant: number;
   status: string;
-  type: 'emporter' | 'sur_place';
-  numTable?: string;
-  total: number;
-  notes?: string;
+  created_at: string;
 }
 
 interface Props {
   factures: Facture[];
+  flash?: {
+    success?: string;
+  };
 }
 
-export default function FactureIndex({ factures }: Props) {
-  return (
-    <AppLayout>
-      <Head title="Liste des Factures" />
+const breadcrumbs: BreadcrumbItem[] = [
+  {
+    title: 'Les Factures',
+    href: '/factures',
+  },
+];
 
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Liste des Factures</h1>
-          <Link href={route('factures.create')} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            Nouvelle Facture
-          </Link>
+export default function Index({ factures, flash }: Props) {
+  const { delete: destroy, processing } = useForm();
+  const { props } = usePage();
+  const [filteredFactures, setFilteredFactures] = useState<Facture[]>(factures);
+
+  useEffect(() => {
+    if (props.flash?.success) {
+      toast(props.flash.success);
+    }
+  }, [props.flash, toast]);
+
+  const handleDelete = (id: number) => {
+    if (confirm('Voulez-vous vraiment supprimer cette facture ?')) {
+      destroy(route('factures.destroy', id));
+    }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value.toLowerCase();
+    const filtered = factures.filter(f => f.client.name.toLowerCase().includes(query));
+    setFilteredFactures(filtered);
+  };
+
+  return (
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <Head title="Les Factures" />
+      <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+        <div className="flex justify-end">
+          <Input
+            type="text"
+            placeholder="Rechercher une facture par client..."
+            className="w-64"
+            onChange={handleSearch}
+          />
         </div>
 
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Client</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Table</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Total (MAD)</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {factures.map(facture => (
-              <TableRow key={facture.id}>
-                <TableCell>{facture.id}</TableCell>
-                <TableCell>{facture.client?.name}</TableCell>
-                <TableCell>{facture.type === 'emporter' ? 'À emporter' : 'Sur place'}</TableCell>
-                <TableCell>{facture.numTable ?? '—'}</TableCell>
-                <TableCell>{facture.status}</TableCell>
-                <TableCell>{Number(facture.total).toFixed(2)}</TableCell>
-                <TableCell className="flex gap-2">
-                  <Link
-                    href={route('factures.edit', facture.id)}
-                    className="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded flex items-center gap-1"
-                  >
-                    <Pencil className="w-4 h-4" />
-                    Modifier
-                  </Link>
-                  <Button variant="destructive" size="sm">
-                    <Trash className="w-4 h-4 mr-1" />
-                    Supprimer
-                  </Button>
-                </TableCell>
+        <h1 className="text-xl font-bold">Liste des factures</h1>
+
+        {filteredFactures.length === 0 ? (
+          <p className="text-center text-gray-500 italic">Aucune facture trouvée.</p>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>ID</TableHead>
+                <TableHead>Client</TableHead>
+                <TableHead>Montant</TableHead>
+                <TableHead>Statut</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {filteredFactures.map(facture => (
+                <TableRow key={facture.id}>
+                  <TableCell>{facture.id}</TableCell>
+                  <TableCell>{facture.client?.name || '—'}</TableCell>
+                  <TableCell>{facture.montant} MAD</TableCell>
+                  <TableCell>{facture.status}</TableCell>
+                  <TableCell>{new Date(facture.created_at).toLocaleDateString()}</TableCell>
+                  <TableCell className="flex gap-2">
+                    <Link
+                      href=""
+                      className="flex items-center gap-1 rounded bg-gray-600 px-2 py-1 text-white hover:bg-gray-700"
+                    >
+                      <Eye className="h-4 w-4" />
+                      Voir
+                    </Link>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDelete(facture.id)}
+                      disabled={processing}
+                    >
+                      <Trash className="mr-1 h-4 w-4" />
+                      Supprimer
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
     </AppLayout>
   );
