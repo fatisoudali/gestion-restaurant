@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('commandes', function (Blueprint $table) {
-    $table->id();
-    $table->string('name');
-    $table->decimal('price', 8, 2); // Bien définir le type decimal
-    $table->integer('quantity');
-    $table->unsignedBigInteger('category_id')->nullable();
-    $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
-    $table->timestamps();
-});
+            $table->id();
+            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
+            $table->string('status')->default('pending');
+            $table->enum('type', ['emporter', 'sur_place'])->default('sur_place');
+            $table->string('numTable')->nullable();
+            $table->decimal('total', 10, 2)->default(0.00);
+            $table->text('notes')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

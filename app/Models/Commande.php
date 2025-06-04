@@ -32,12 +32,4 @@ class Commande extends Model
         return $this->hasMany(LineCommande::class);
     }
 
-    /**
-     * Si tu veux lier une catégorie à la commande (optionnel).
-     * Supprime cette méthode si ce n'est pas nécessaire.
-     */
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
 }

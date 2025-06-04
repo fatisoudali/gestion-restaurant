@@ -11,13 +11,14 @@ class CommandeController extends Controller
 {
     public function index()
     {
-        $commandes = Commande::with('category')->latest()->get()->map(function ($cmd) {
+        $commandes = Commande::with('client')->latest()->get()->map(function ($cmd) {
             return [
                 'id' => $cmd->id,
-                'name' => $cmd->name,
-                'price' => $cmd->price,
-                'quantity' => $cmd->quantity,
-                'category' => $cmd->category ? ['name' => $cmd->category->name] : null,
+                'numTable' => $cmd->numTable,
+                'status' => $cmd->status,
+                'type' => $cmd->type,
+                'total' => $cmd->total,
+                'client' => $cmd->client ? ['name' => $cmd->client->name] : null,
             ];
         });
 

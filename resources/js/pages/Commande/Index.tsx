@@ -5,19 +5,19 @@ import { toast } from 'sonner';
 import { type BreadcrumbItem } from '@/types';
 import {Table,TableHeader,TableRow,TableHead,TableBody,TableCell,} from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Pencil, Trash } from 'lucide-react';
+import { Pencil, Trash, Eye } from 'lucide-react';
 
 
 
 interface Commande {
   id: number;
-  category_id: number;
-  name: string;
-  price: number;
-  quantity: number;
-   category: {
+  numTable: number;
+  status: string;
+  type: string;
+  total: number;
+  client: {
     name: string;
-  };
+  }
 }
 
 interface Props {
@@ -73,9 +73,10 @@ export default function Index({ commandes, flash }: Props) {
               <TableRow>
                 <TableHead>ID</TableHead>
                 <TableHead>Nom</TableHead>
-                <TableHead>Catégorie</TableHead>
-                <TableHead>Prix</TableHead>
-                <TableHead>Quantité</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Prix total</TableHead>
+                <TableHead>Statut</TableHead>
+                <TableHead>Nº table</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -83,11 +84,19 @@ export default function Index({ commandes, flash }: Props) {
               {commandes.map((cmd) => (
                 <TableRow key={cmd.id}>
                   <TableCell>{cmd.id}</TableCell>
-                  <TableCell>{cmd.name}</TableCell>
-                  <TableCell>{cmd.category?.name || '—'}</TableCell>
-                  <TableCell>{cmd.price} MAD</TableCell>
-                  <TableCell>{cmd.quantity}</TableCell>
+                  <TableCell>{cmd.client?.name || '—'}</TableCell>
+                  <TableCell>{cmd.type}</TableCell>
+                  <TableCell>{cmd.total} MAD</TableCell>
+                  <TableCell>{cmd.status}</TableCell>
+                  <TableCell>{cmd.numTable}</TableCell>
                   <TableCell className="flex gap-2">
+                    <Link
+                      href=""
+                      className="flex items-center gap-1 rounded bg-gray-600 px-2 py-1 text-white hover:bg-gray-700"
+                    >
+                      <Eye className="h-4 w-4" />
+                      Voir
+                    </Link>
                     <Link
                       href={route('commandes.edit', cmd.id)}
                       className="flex items-center gap-1 rounded bg-green-600 px-2 py-1 text-white hover:bg-green-700"
