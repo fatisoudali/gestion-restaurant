@@ -46,9 +46,28 @@ class PlatController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric',
+        'category_id' => 'required|exists:categories,id',
+        'image' => 'required|image|max:2048',
+    ]);
+
+    $plat = Plat::create([
+        'name' => $validated['name'],
+        'price' => $validated['price'],
+        'category_id' => $validated['category_id'],
+    ]);
+
+    // Enregistrer l'image via Spatie Media Library
+    if ($request->hasFile('image')) {
+        $plat->addMediaFromRequest('image')->toMediaCollection('images');
     }
+
+    return redirect()->route('plats.index')->with('success', 'Plat ajouté avec succès.');
+}
+
 
     /**
      * Display the specified resource.
@@ -62,17 +81,50 @@ class PlatController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
-        //
-    }
+{
+    $plat = Plat::with('category')->findOrFail($id);
+    $categories = Category::all();
+
+    return Inertia::render('Plats/Edit', [
+        'plat' => [
+            'id' => $plat->id,
+            'name' => $plat->name,
+            'price' => $plat->price,
+            'category_id' => $plat->category_id,
+            'image' => $plat->getFirstMediaUrl('images'),
+        ],
+        'categories' => $categories,
+    ]);
+}
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric',
+        'category_id' => 'required|exists:categories,id',
+        'image' => 'nullable|image|max:2048',
+    ]);
+
+    $plat = Plat::findOrFail($id);
+    $plat->update([
+        'name' => $validated['name'],
+        'price' => $validated['price'],
+        'category_id' => $validated['category_id'],
+    ]);
+
+    if ($request->hasFile('image')) {
+        $plat->clearMediaCollection('images');
+        $plat->addMediaFromRequest('image')->toMediaCollection('images');
     }
+
+    return redirect()->route('plats.index')->with('success', 'Plat modifié avec succès.');
+}
+
 
     /**
      * Remove the specified resource from storage.

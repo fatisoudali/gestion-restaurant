@@ -19,6 +19,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('categories', CategoryController::class);
     Route::resource('plats', PlatController::class);
+    
+
     Route::get('/clients', [ClientController::class, 'index'])->name('Client.index');
 
     // Optionnel : pour gérer les autres actions client (CRUD)

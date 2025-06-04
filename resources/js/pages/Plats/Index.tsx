@@ -74,10 +74,14 @@ export default function Index({ plats, flash }: Props) {
                             </CardContent>
                             <CardFooter className="flex justify-end gap-4 items-center">
                                 <CardAction>
-                                    <button className="px-4 py-1 bg-green-700 text-white rounded hover:bg-green-800 transition">
+                                    <Link
+                                        href={route('plats.edit', plat.id)}
+                                         className="px-3 py-1 bg-green-700 text-white rounded hover:bg-green-800 transition"
+                                    >
                                         Modifier
-                                    </button>
+                                    </Link>
                                 </CardAction>
+
                                 <CardAction>
                                     <button
                                         onClick={() => handleDelete(plat.id)}
