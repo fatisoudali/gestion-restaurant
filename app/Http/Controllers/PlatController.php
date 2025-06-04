@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Plat;
+use App\Models\Category;
 use Inertia\Inertia;
 
 class PlatController extends Controller
@@ -35,7 +36,10 @@ class PlatController extends Controller
      */
     public function create()
     {
-        //
+         $categories = Category::all();
+    return Inertia::render('Plats/Create', [
+        'categories' => $categories,
+    ]);
     }
 
     /**
