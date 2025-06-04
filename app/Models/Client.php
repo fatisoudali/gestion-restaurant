@@ -19,11 +19,6 @@ class Client extends Model implements HasMedia
         'phone',
     ];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
     public function commandes()
     {
         return $this->hasMany(Commande::class);

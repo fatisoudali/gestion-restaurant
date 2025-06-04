@@ -10,17 +10,13 @@ class ClientController extends Controller
 {
     public function Index()
     {
-        $clients = Client::with('category')->latest()->get()->map(function ($client) {
+        $clients = Client::latest()->get()->map(function ($client) {
             return [
                 'id' => $client->id,
-                'category_id' => $client->category_id,
                 'name' => $client->name,
                 'email' => $client->email,
                 'phone' => $client->phone,
-                'category' => [
-                    'name' => optional($client->category)->name,
-                ],
-                
+                'address' => $client->address,
             ];
         });
 

@@ -12,9 +12,7 @@ interface Client {
   name: string;
   email: string;
   phone?: string;
-  category: {
-        name: string;
-    };
+  address: string;
 }
 
 interface Props {
@@ -73,7 +71,7 @@ export default function Index({ clients, flash }: Props) {
                 <TableHead>Nom</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Téléphone</TableHead>
-                 <TableHead>Catégorie</TableHead> {/* Nouvelle colonne */}
+                <TableHead>Adresse</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -85,7 +83,7 @@ export default function Index({ clients, flash }: Props) {
                   <TableCell>{client.name}</TableCell>
                   <TableCell>{client.email}</TableCell>
                   <TableCell>{client.phone || '—'}</TableCell>
-                  <TableCell>{client.category?.name || '—'}</TableCell>
+                  <TableCell>{client.address}</TableCell>
                   <TableCell className="flex gap-2">
                     <Link
                       href={route('clients.edit', client.id)}
