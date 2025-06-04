@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PlatController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\FactureController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -34,6 +35,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/commande/{commande}/edit', [CommandeController::class, 'edit'])->name('commandes.edit');
     Route::put('/commande/{commande}', [CommandeController::class, 'update'])->name('commandes.update');
     Route::delete('/commande/{commande}', [CommandeController::class, 'destroy'])->name('commandes.destroy');
+
+    Route::get('/facture', [FactureController::class, 'index'])->name('Facture.index');
+
+    Route::get('/facture/create', [FactureController::class, 'create'])->name('factures.create');
+    Route::post('/facture', [FactureController::class, 'store'])->name('factures.store');
+    Route::get('/facture/{facture}/edit', [FactureController::class, 'edit'])->name('factures.edit');
+    Route::put('/facture/{facture}', [FactureController::class, 'update'])->name('factures.update');
+    Route::delete('/facture/{facture}', [FactureController::class, 'destroy'])->name('factures.destroy');
+    
     
     
 });

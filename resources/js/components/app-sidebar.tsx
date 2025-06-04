@@ -33,6 +33,11 @@ const mainNavItems: NavItem[] = [
         href: '/commande',
         icon: Folder,
     },
+    {
+        title: 'Les Factures',
+        href: '/facture',
+        icon: Folder,
+    },
 ];
 
 
