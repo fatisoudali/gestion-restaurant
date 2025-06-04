@@ -4,10 +4,15 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useEffect, useState } from 'react';
 
-interface Props {
-  categories: { id: number; name: string }[];
+interface Category {
+  id: number;
+  name: string;
+}
+
+interface CreateProps {
+  categories: Category[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -15,21 +20,26 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Créer un plat', href: '/plats/create' },
 ];
 
-export default function Create({ categories }: Props) {
+export default function Create({ categories }: CreateProps) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     description: '',
     price: '',
-    image: null as File | null,
     category_id: '',
+    image: null as File | null,
   });
+
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     post('/plats', {
       forceFormData: true,
-      onSuccess: () => reset(),
+      onSuccess: () => {
+        reset();
+        setPreviewImage(null);
+      },
     });
   };
 
@@ -37,8 +47,8 @@ export default function Create({ categories }: Props) {
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Créer un plat" />
 
-      <div className="flex flex-1 flex-col gap-4 p-4">
-        <h1 className="mb-4 text-3xl font-semibold">Créer un nouveau plat</h1>
+      <div className="flex flex-col gap-4 p-4">
+        <h1 className="text-3xl font-semibold mb-4">Créer un nouveau plat</h1>
 
         <form
           onSubmit={handleSubmit}
@@ -46,8 +56,8 @@ export default function Create({ categories }: Props) {
           encType="multipart/form-data"
         >
           <div>
-            <label htmlFor="name" className="mb-1 block text-sm font-medium">
-              Nom du plat
+            <label htmlFor="name" className="block text-sm font-medium mb-1">
+              Nom
             </label>
             <Input
               id="name"
@@ -59,7 +69,7 @@ export default function Create({ categories }: Props) {
           </div>
 
           <div>
-            <label htmlFor="description" className="mb-1 block text-sm font-medium">
+            <label htmlFor="description" className="block text-sm font-medium mb-1">
               Description
             </label>
             <Textarea
@@ -72,13 +82,14 @@ export default function Create({ categories }: Props) {
           </div>
 
           <div>
-            <label htmlFor="price" className="mb-1 block text-sm font-medium">
-              Prix
+            <label htmlFor="price" className="block text-sm font-medium mb-1">
+              Prix (€)
             </label>
             <Input
               id="price"
               name="price"
               type="number"
+              step="0.01"
               value={data.price}
               onChange={(e) => setData('price', e.target.value)}
             />
@@ -86,27 +97,30 @@ export default function Create({ categories }: Props) {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium">Catégorie</label>
-            <Select
+            <label htmlFor="category_id" className="block text-sm font-medium mb-1">
+              Catégorie
+            </label>
+            <select
+              id="category_id"
+              name="category_id"
               value={data.category_id}
-              onValueChange={(value) => setData('category_id', value)}
+              onChange={(e) => setData('category_id', e.target.value)}
+              className="w-full border rounded px-2 py-2"
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Choisir une catégorie" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((cat) => (
-                  <SelectItem key={cat.id} value={cat.id.toString()}>
-                    {cat.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.category_id && <p className="text-sm text-red-500 mt-1">{errors.category_id}</p>}
+              <option value="">Sélectionner une catégorie</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+            {errors.category_id && (
+              <p className="text-sm text-red-500 mt-1">{errors.category_id}</p>
+            )}
           </div>
 
           <div>
-            <label htmlFor="image" className="mb-1 block text-sm font-medium">
+            <label htmlFor="image" className="block text-sm font-medium mb-1">
               Image
             </label>
             <Input
@@ -114,13 +128,26 @@ export default function Create({ categories }: Props) {
               name="image"
               type="file"
               accept="image/*"
-              onChange={(e) => setData('image', e.target.files?.[0] ?? null)}
+              onChange={(e) => {
+                const file = e.target.files?.[0] ?? null;
+                setData('image', file);
+                if (file) {
+                  setPreviewImage(URL.createObjectURL(file));
+                }
+              }}
             />
+            {previewImage && (
+              <img
+                src={previewImage}
+                alt="Aperçu"
+                className="w-32 h-32 object-cover mt-2 rounded"
+              />
+            )}
             {errors.image && <p className="text-sm text-red-500 mt-1">{errors.image}</p>}
           </div>
 
           <Button type="submit" disabled={processing}>
-            {processing ? 'Ajout en cours...' : 'Ajouter le plat'}
+            {processing ? 'Enregistrement...' : 'Enregistrer'}
           </Button>
         </form>
       </div>
