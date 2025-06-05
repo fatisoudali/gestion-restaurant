@@ -105,27 +105,15 @@ class PlatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Plat $plat)
 {
     $validated = $request->validate([
         'name' => 'required|string|max:255',
-        'price' => 'required|numeric',
-        'description' => $validated['description'] ?? null,
-        'category_id' => 'required|exists:categories,id',
-        'image' => 'nullable|image|max:2048',
+        'description' => 'nullable|string',
+        'price' => 'required|numeric|min:0',
     ]);
 
-    $plat = Plat::findOrFail($id);
-    $plat->update([
-        'name' => $validated['name'],
-        'price' => $validated['price'],
-        'category_id' => $validated['category_id'],
-    ]);
-
-    if ($request->hasFile('image')) {
-        $plat->clearMediaCollection('images');
-        $plat->addMediaFromRequest('image')->toMediaCollection('images');
-    }
+    $plat->update($validated);
 
     return redirect()->route('plats.index')->with('success', 'Plat modifié avec succès.');
 }

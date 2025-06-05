@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'category' => 'App\Models\Category',
             'plat' => 'App\Models\Plat',
+            'client' => 'App\Models\Client',
         ]);
     }
 }

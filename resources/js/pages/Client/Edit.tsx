@@ -84,7 +84,7 @@ export default function Edit({ client }: Props) {
                         <Textarea
                             id="address"
                             value={data.address}
-                            onChange={e => setData('address', e.target.value)}
+                            onChange={(e) => setData('address', e.target.value)}
                             disabled={processing}
                             rows={3}
                         />

@@ -48,6 +48,7 @@ export default function Edit({ plat, categories }: Props) {
             <Head title="Modifier un plat" />
             <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-900 max-w-2xl mx-auto">
                 <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
+                    
                     {/* Nom */}
                     <div>
                         <label htmlFor="name" className="block font-medium mb-1">Nom *</label>

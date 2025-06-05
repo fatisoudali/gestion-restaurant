@@ -17,6 +17,8 @@ class Client extends Model implements HasMedia
         'name',
         'email',
         'phone',
+        'phone',
+        
     ];
 
     public function commandes()
