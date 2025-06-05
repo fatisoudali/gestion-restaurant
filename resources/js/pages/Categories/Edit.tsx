@@ -58,16 +58,15 @@ export default function Edit({ category }: Props) {
 
                     {/* Name */}
                     <div>
-                        <label htmlFor="name" className="mb-2 block font-medium">
-                            Nom
-                        </label>
+                        <label htmlFor="name" className="block font-medium mb-1">Nom *</label>
                         <Input
                             id="name"
                             value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
+                            onChange={e => setData('name', e.target.value)}
                             disabled={processing}
+                            required
                         />
-                        {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                        {errors.name && <p className="text-sm text-red-600">{errors.name}</p>}
                     </div>
 
                     {/* Description */}

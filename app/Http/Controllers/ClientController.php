@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ClientController extends Controller
 {
@@ -30,7 +31,7 @@ class ClientController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create() :Response
     {
         return Inertia::render('Client/Create');
     }
@@ -44,6 +45,7 @@ class ClientController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
         ]);
 
         Client::create($validated);

@@ -1,121 +1,138 @@
-import React, { useState } from 'react';
-import { useForm } from '@inertiajs/react';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import AppLayout from '@/layouts/app-layout';
+import { Head, Link, useForm } from '@inertiajs/react';
+import type { BreadcrumbItem } from '@/types';
+
+const breadcrumbs: BreadcrumbItem[] = [
+    { title: 'Les Plats', href: '/plats' },
+    { title: 'Modifier un plat', href: '#' },
+];
 
 interface Category {
-  id: number;
-  name: string;
+    id: number;
+    name: string;
 }
 
-interface Plat {
-  id: number;
-  name: string;
-  price: number;
-  category_id: number;
-  image?: string;
+interface Props {
+    plat: {
+        id: number;
+        name: string;
+        description: string;
+        price: number;
+        category_id: number;
+    };
+    categories: Category[];
 }
 
-interface EditProps {
-  plat: Plat;
-  categories: Category[];
-}
-
-const Edit: React.FC<EditProps> = ({ plat, categories }) => {
-  const [previewImage, setPreviewImage] = useState(plat.image || '');
-
-  const { data, setData, put, processing, errors } = useForm({
-    name: plat.name,
-    price: plat.price,
-    category_id: plat.category_id,
-    image: null as File | null,
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    put(route('plats.update', plat.id), {
-      forceFormData: true,
+export default function Edit({ plat, categories }: Props) {
+    const { data, setData, put, processing, errors } = useForm({
+        name: plat.name || '',
+        description: plat.description || '',
+        price: plat.price || 0,
+        category_id: plat.category_id || '',
+        image: null as File | null,
     });
-  };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setData('image', file);
-      setPreviewImage(URL.createObjectURL(file));
-    }
-  };
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        put(route('plats.update', plat.id), {
+            forceFormData: true,
+            preserveScroll: true,
+        });
+    };
 
-  return (
-    <div className="max-w-xl mx-auto mt-8 p-6 bg-white rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-4">Modifier le plat</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <Label htmlFor="name">Nom du plat</Label>
-          <Input
-            id="name"
-            value={data.name}
-            onChange={(e) => setData('name', e.target.value)}
-          />
-          {errors.name && <div className="text-red-500 text-sm">{errors.name}</div>}
-        </div>
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Modifier un plat" />
+            <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-900 max-w-2xl mx-auto">
+                <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
+                    {/* Nom */}
+                    <div>
+                        <label htmlFor="name" className="block font-medium mb-1">Nom *</label>
+                        <Input
+                            id="name"
+                            value={data.name}
+                            onChange={e => setData('name', e.target.value)}
+                            disabled={processing}
+                            required
+                        />
+                        {errors.name && <p className="text-sm text-red-600">{errors.name}</p>}
+                    </div>
 
-        <div>
-          <Label htmlFor="price">Prix</Label>
-          <Input
-            id="price"
-            type="number"
-            value={data.price}
-            onChange={(e) => setData('price', parseFloat(e.target.value))}
-          />
-          {errors.price && <div className="text-red-500 text-sm">{errors.price}</div>}
-        </div>
+                    {/* Description */}
+                    <div>
+                        <label htmlFor="description" className="block font-medium mb-1">Description</label>
+                        <Textarea
+                            id="description"
+                            value={data.description}
+                            onChange={e => setData('description', e.target.value)}
+                            disabled={processing}
+                            rows={4}
+                        />
+                        {errors.description && <p className="text-sm text-red-600">{errors.description}</p>}
+                    </div>
 
-        <div>
-          <Label htmlFor="category">Catégorie</Label>
-          <Select
-            defaultValue={String(data.category_id)}
-            onValueChange={(value) => setData('category_id', parseInt(value))}
-          >
-            <SelectTrigger id="category">
-              <SelectValue placeholder="Choisir une catégorie" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map((cat) => (
-                <SelectItem key={cat.id} value={String(cat.id)}>
-                  {cat.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {errors.category_id && (
-            <div className="text-red-500 text-sm">{errors.category_id}</div>
-          )}
-        </div>
+                    {/* Prix */}
+                    <div>
+                        <label htmlFor="price" className="block font-medium mb-1">Prix (€)</label>
+                        <Input
+                            id="price"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={data.price}
+                            onChange={e => setData('price', parseFloat(e.target.value))}
+                            disabled={processing}
+                        />
+                        {errors.price && <p className="text-sm text-red-600">{errors.price}</p>}
+                    </div>
 
-        <div>
-          <Label htmlFor="image">Image</Label>
-          <Input type="file" onChange={handleImageChange} />
-          {previewImage && (
-            <img
-              src={previewImage}
-              alt="Preview"
-              className="h-24 mt-2 rounded shadow"
-            />
-          )}
-          {errors.image && (
-            <div className="text-red-500 text-sm">{errors.image}</div>
-          )}
-        </div>
+                    {/* Catégorie */}
+                    <div>
+                        <label htmlFor="category_id" className="block font-medium mb-1">Catégorie</label>
+                        <select
+                            id="category_id"
+                            value={data.category_id}
+                            onChange={e => setData('category_id', parseInt(e.target.value))}
+                            disabled={processing}
+                            className="w-full rounded border px-3 py-2 dark:bg-gray-800 dark:text-white"
+                        >
+                            <option value="">-- Choisir une catégorie --</option>
+                            {categories.map((cat) => (
+                                <option key={cat.id} value={cat.id}>{cat.name}</option>
+                            ))}
+                        </select>
+                        {errors.category_id && <p className="text-sm text-red-600">{errors.category_id}</p>}
+                    </div>
 
-        <Button type="submit" disabled={processing}>
-          Modifier le plat
-        </Button>
-      </form>
-    </div>
-  );
-};
+                    {/* Image */}
+                    <div>
+                        <label htmlFor="image" className="block font-medium mb-1">Image (optionnelle)</label>
+                        <Input
+                            id="image"
+                            type="file"
+                            onChange={e => setData('image', e.target.files?.[0] ?? null)}
+                            disabled={processing}
+                        />
+                        {errors.image && <p className="text-sm text-red-600">{errors.image}</p>}
+                    </div>
 
-export default Edit;
+                    {/* Actions */}
+                    <div className="flex items-center gap-4">
+                        <Button type="submit" disabled={processing}>
+                            Enregistrer
+                        </Button>
+                        <Link
+                            href={route('plats.index')}
+                            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+                        >
+                            Annuler
+                        </Link>
+                    </div>
+                </form>
+            </div>
+        </AppLayout>
+    );
+}
