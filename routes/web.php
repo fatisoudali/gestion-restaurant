@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PlatController;
 use App\Http\Controllers\ClientController;
@@ -14,10 +15,18 @@ Route::get('/', function () {
 })->name('home');
 Route::get('/plates', [PlatController::class, 'frontIndex'])->name('plates');
 
+Route::get('/contact',function () {
+    return Inertia::render('Frontend/contact');
+})->name('contact');
+
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+   
 
     Route::resource('categories', CategoryController::class);
     Route::resource('plats', PlatController::class);

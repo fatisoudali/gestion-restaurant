@@ -17,7 +17,8 @@ export default function FrontLayout({ children }: FrontLayoutProps) {
                 <nav className="flex items-center gap-6 text-sm font-medium">
                     <NavLink href={route('home')} name="Accueille" routeName="home" />
                     <NavLink href={route('plates')} name="Nos plats" routeName="plates" />
-                    <NavLink href="#contact" name="Contact" routeName="" />
+                    {/*<NavLink href="#contact" name="Contact" routeName="" />*/}
+                    <NavLink href={route('contact')} name="Contact" routeName="contact" />
                 </nav>
 
                 <div>
