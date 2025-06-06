@@ -129,4 +129,23 @@ class PlatController extends Controller
 
         return redirect()->route('plats.index')->with('success', 'Plat supprimée avec succès.');
     }
+
+    public function frontIndex()
+    {
+        $plats = Plat::with('category')->latest()->get()->map(function ($plat) {
+            return [
+                'id' => $plat->id,
+                'category_id' => $plat->category_id,
+                'name' => $plat->name,
+                'image' => $plat->getFirstMediaUrl('images'),
+                'price' => $plat->price,
+                'category' => [
+                    'name' => optional($plat->category)->name,
+                ],
+            ];
+        });
+        return Inertia::render('Frontend/plates', [
+            'plats' => $plats,
+        ]);
+    }
 }

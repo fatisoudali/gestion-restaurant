@@ -8,9 +8,11 @@ use App\Http\Controllers\FactureController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Front routes
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('Frontend/home');
 })->name('home');
+Route::get('/plates', [PlatController::class, 'frontIndex'])->name('plates');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -47,9 +49,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/facture/{facture}/edit', [FactureController::class, 'edit'])->name('factures.edit');
     Route::put('/facture/{facture}', [FactureController::class, 'update'])->name('factures.update');
     Route::delete('/facture/{facture}', [FactureController::class, 'destroy'])->name('factures.destroy');
-    
-    
-    
 });
 
 require __DIR__.'/settings.php';
