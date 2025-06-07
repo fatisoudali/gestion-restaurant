@@ -84,7 +84,7 @@ import { Head, useForm } from '@inertiajs/react';
 import food from '@/assets/food-5.jpg';
  // Assurez-vous que cette image existe dans src/assets/
 
-export default function Contact() {
+export default function contact() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',

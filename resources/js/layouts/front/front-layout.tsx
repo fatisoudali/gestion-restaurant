@@ -13,7 +13,7 @@ export default function FrontLayout({ children }: FrontLayoutProps) {
     return (
         <div className="min-h-screen bg-white text-[#1b1b18] dark:bg-[#1b1b18] dark:text-white">
             <header className="mx-auto my-4 flex w-full max-w-[335px] items-center justify-between text-sm not-has-[nav]:hidden lg:max-w-4xl">
-                <h1 className="text-xl">Restuarant</h1>
+                <h1 className="text-xl">RestoManager</h1>
                 <nav className="flex items-center gap-6 text-sm font-medium">
                     <NavLink href={route('home')} name="Accueille" routeName="home" />
                     <NavLink href={route('plates')} name="Nos plats" routeName="plates" />

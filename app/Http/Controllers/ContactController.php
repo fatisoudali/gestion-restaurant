@@ -10,7 +10,9 @@ class ContactController extends Controller
 {
      public function index()
         {
-            return Inertia::render('frontend/contact');
+           return Inertia::render('plats', [
+        'plates' => Plate::all(),
+    ]);
         }
          // Traitement de l'envoi du formulaire
     public function send(Request $request)
