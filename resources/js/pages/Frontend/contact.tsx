@@ -1,6 +1,7 @@
 import FrontLayout from '@/layouts/front/front-layout';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
+import contact from '@/assets/feat-1.jpg';
 
 export default function Contact() {
     const [formData, setFormData] = useState({

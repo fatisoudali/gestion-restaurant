@@ -1,3 +1,4 @@
+
 import FrontLayout from '@/layouts/front/front-layout';
 import { Head, usePage } from '@inertiajs/react';
 
@@ -40,9 +41,37 @@ export default function Plats({ plats }: Props) {
                                     Commander maintenant
                                 </button>
                             </div>
+                            
                         ))}
                     </div>
                 </div>
+                //📍 Infos du restaurant & newsletter 
+                    <div className="bg-gray-100 p-6 rounded-lg shadow-md">
+                        <h2 className="text-xl font-semibold text-gray-800 mb-2">Adresse du restaurant</h2>
+                        <p className="text-gray-700 mb-4">
+                            RestoManager Marocain<br />
+                            Centre Ville<br />
+                            45800 Tinghir, Maroc
+                        </p>
+
+                        <h2 className="text-xl font-semibold text-gray-800 mb-2">Téléphone</h2>
+                        <p className="text-gray-700 mb-4">+212 662 234 564</p>
+
+                        <h2 className="text-xl font-semibold text-gray-800 mb-2">Newsletter</h2>
+                        <p className="text-gray-700 mb-2">Recevez nos menus du jour et offres spéciales.</p>
+                        <input
+                            type="email"
+                            placeholder="Saisissez votre e-mail"
+                            className="border border-gray-300 p-2 rounded w-full mb-2"
+                        />
+                        <button className="bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700">
+                            S'abonner
+                        </button>
+                        <p className="text-xs text-gray-500 mt-2">
+                            Vos informations sont en sécurité. Consultez notre{' '}
+                            <a href="#" className="text-orange-600 underline">politique de confidentialité</a>.
+                        </p>
+                    </div>
             </FrontLayout>
         </>
     );

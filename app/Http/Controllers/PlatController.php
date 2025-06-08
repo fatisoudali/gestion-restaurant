@@ -9,9 +9,6 @@ use Inertia\Inertia;
 
 class PlatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $plats = Plat::with('category')->latest()->get()->map(function ($plat) {
@@ -29,89 +26,79 @@ class PlatController extends Controller
         return Inertia::render('Plats/Index', [
             'plats' => $plats,
         ]);
-    }
+    } 
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-          $categories = Category::select('id', 'name')->get(); 
+        $categories = Category::select('id', 'name')->get(); 
 
-    return Inertia::render('Plats/Create', [
-        'categories' => $categories,
-    ]);
-
+        return Inertia::render('Plats/Create', [
+            'categories' => $categories,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'required|image|max:2048',
+        ]);
+
+        $plat = Plat::create([
+            'name' => $validated['name'],
+            'price' => $validated['price'],
+            'description' => $validated['description'] ?? null,
+            'category_id' => $validated['category_id'],
+        ]);
+
+        if ($request->hasFile('image')) {
+            $plat->addMediaFromRequest('image')->toMediaCollection('images');
+        }
+
+        return redirect()->route('plats.index')->with('success', 'Plat ajouté avec succès.');
+    }
+
+    public function edit(Plat $plat)
+    {
+        $plat->image_url = $plat->getFirstMediaUrl('images');
+        return Inertia::render('Plats/Edit', [
+            'plat' => $plat,
+            'categories' => Category::all(),
+        ]);
+    }
+
+    public function update(Request $request, $id)
 {
-    $validated = $request->validate([
+    $plat = Plat::findOrFail($id);
+
+    $request->validate([
         'name' => 'required|string|max:255',
+        'description' => 'required|string',
         'price' => 'required|numeric',
-        'description' => 'nullable|string',
         'category_id' => 'required|exists:categories,id',
-        'image' => 'required|image|max:2048',
+        'image' => 'nullable|image|max:2048',
     ]);
 
-    $plat = Plat::create([
-        'name' => $validated['name'],
-        'price' => $validated['price'],
-         'description' => $validated['description'] ?? null,
-        'category_id' => $validated['category_id'],
+    $plat->update([
+        'name' => $request->name,
+        'description' => $request->description,
+        'price' => $request->price,
+        'category_id' => $request->category_id,
     ]);
 
-    // Enregistrer l'image via Spatie Media Library
+    // Gérer l'image avec Spatie
     if ($request->hasFile('image')) {
+        $plat->clearMediaCollection('images');
         $plat->addMediaFromRequest('image')->toMediaCollection('images');
     }
 
-    return redirect()->route('plats.index')->with('success', 'Plat ajouté avec succès.');
+    return redirect()->back()->with('success', 'Plat mis à jour avec succès');
 }
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-   public function edit(Plat $plat)
-{
-    return Inertia::render('Plats/Edit', [
-        'plat' => $plat,
-        'categories' => Category::all(['id', 'name']),
-    ]);
-}
-
-    /**
-     * Update the specified resource in storage.
-     */
-   public function update(Request $request, Plat $plat)
-{
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'price' => 'required|numeric',
-        'category_id' => 'required|exists:categories,id',
-    ]);
-
-    $plat->update($validated);
-
-    return redirect()->route('plats.index')->with('success', 'Plat mis à jour avec succès.');
-}
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $plat = Plat::findOrFail($id);

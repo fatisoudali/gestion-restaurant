@@ -43,7 +43,7 @@ export default function Edit({ category }: Props) {
         e.preventDefault();
 
         put(route('categories.update', category.id), {
-            forceFormData: true,
+           // forceFormData: true,
             preserveScroll: true,
         });
     };

@@ -55,7 +55,7 @@ export default function Edit({ plat, categories }: Props) {
         e.preventDefault();
         put(route('plats.update', plat.id), {
             preserveScroll: true,
-            forceFormData: true,
+            //forceFormData: true,
         });
     };
 

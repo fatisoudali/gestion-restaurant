@@ -15,7 +15,7 @@ Route::get('/', function () {
 })->name('home');
 Route::get('/plates', [PlatController::class, 'frontIndex'])->name('plates');
 Route::get('/plats/{plat}/edit', [PlatController::class, 'edit'])->name('plats.edit');
-Route::put('/plats/{plat}', [PlatController::class, 'update'])->name('plats.update');
+Route::put('/plats/{id}', [PlatController::class, 'update'])->name('plats.update');
 
 
 Route::get('/contact',function () {

@@ -12,6 +12,13 @@ class Plat extends Model implements HasMedia
     /** @use HasFactory<\Database\Factories\PlatFactory> */
     use HasFactory;
     use InteractsWithMedia;
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
+        'category_id',
+        
+    ];
 
     public function category()
     {
