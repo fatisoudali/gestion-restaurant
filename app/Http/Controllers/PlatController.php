@@ -84,40 +84,30 @@ class PlatController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+   public function edit(Plat $plat)
 {
-    $plat = Plat::with('category')->findOrFail($id);
-    $categories = Category::all();
-
     return Inertia::render('Plats/Edit', [
-        'plat' => [
-            'id' => $plat->id,
-            'name' => $plat->name,
-            'price' => $plat->price,
-            'category_id' => $plat->category_id,
-            'image' => $plat->getFirstMediaUrl('images'),
-        ],
-        'categories' => $categories,
+        'plat' => $plat,
+        'categories' => Category::all(['id', 'name']),
     ]);
 }
-
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Plat $plat)
+   public function update(Request $request, Plat $plat)
 {
     $validated = $request->validate([
         'name' => 'required|string|max:255',
         'description' => 'nullable|string',
-        'price' => 'required|numeric|min:0',
+        'price' => 'required|numeric',
+        'category_id' => 'required|exists:categories,id',
     ]);
 
     $plat->update($validated);
 
-    return redirect()->route('plats.index')->with('success', 'Plat modifié avec succès.');
+    return redirect()->route('plats.index')->with('success', 'Plat mis à jour avec succès.');
 }
-
 
     /**
      * Remove the specified resource from storage.

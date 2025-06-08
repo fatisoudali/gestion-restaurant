@@ -83,7 +83,7 @@ export default function Create({ categories }: CreateProps) {
 
           <div>
             <label htmlFor="price" className="block text-sm font-medium mb-1">
-              Prix (€)
+              Prix (MAD)
             </label>
             <Input
               id="price"
