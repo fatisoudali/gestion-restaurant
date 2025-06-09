@@ -1,13 +1,21 @@
-import AppLogoIcon from './app-logo-icon';
 
+import logoImg from '@/assets/chef.avif';
 export default function AppLogo() {
     return (
         <>
-            <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
-                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
-            </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-none font-semibold">Gestion Restauration</span>
+            <div className="flex items-center">
+                {/* Logo image */}
+                <img src={logoImg} // 📍 Remplace par le chemin correct de ton logo
+                    alt="Logo Restaurant"
+                    className="h-10 w-10 rounded-full object-cover border border-white shadow-md"
+                />
+                {/* Nom du projet */}
+                <div className="ml-2 text-left text-sm">
+                    <span className="block font-bold text-red-700 leading-tight">
+                        RestoManager
+                    </span>
+                    <span className="text-xs text-gray-500">Gestion Restauration</span>
+                </div>
             </div>
         </>
     );

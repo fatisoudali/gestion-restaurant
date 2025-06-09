@@ -27,6 +27,15 @@ class CommandeController extends Controller
         ]);
     }
 
+ public function Show ($id)
+    {
+        $commandes= Commande::findOrFail($id);
+
+        return Inertia::render('Commande/Show', [
+            'commandes' => $commandes,
+        ]);
+    }
+    
     public function create()
     {
         $categories = Category::all(['id', 'name']);

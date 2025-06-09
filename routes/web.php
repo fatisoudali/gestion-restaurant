@@ -17,6 +17,17 @@ Route::get('/', function () {
 Route::get('/plates', [PlatController::class, 'frontIndex'])->name('plates');
 Route::get('/plats/{plat}/edit', [PlatController::class, 'edit'])->name('plats.edit');
 Route::put('/plats/{id}', [PlatController::class, 'update'])->name('plats.update');
+Route::get('/plats', function () {
+    return Inertia::render('Plats/Index');
+});
+
+Route::get('/commandes', function () {
+    return Inertia::render('Commande/Index');
+});
+
+Route::get('/clients', function () {
+    return Inertia::render('Client/Index');
+});
 
 
 Route::get('/contact',function () {
