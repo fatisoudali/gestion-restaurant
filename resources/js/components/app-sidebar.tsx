@@ -34,6 +34,11 @@ const mainNavItems: NavItem[] = [
         icon: Folder,
     },
     {
+        title: 'Panier',
+        href: '/panier',
+        icon: Folder,
+    },
+    {
         title: 'Les Factures',
         href: '/facture',
         icon: Folder,

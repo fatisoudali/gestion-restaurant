@@ -1,6 +1,6 @@
 
 import FrontLayout from '@/layouts/front/front-layout';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, usePage , router} from '@inertiajs/react';
 
 interface Plat {
     id: number;
@@ -37,7 +37,9 @@ export default function Plats({ plats }: Props) {
                                     <span className="text-orange-700 font-bold">{plat.price} MAD</span>
                                     <span className="text-sm text-yellow-600">⭐ {plat.rating} ({plat.reviews})</span>
                                 </div>
-                                <button className="mt-4 w-full bg-orange-600 text-white py-2 rounded hover:bg-orange-700 transition">
+                                <button 
+                                 onClick={() => router.visit(`/commander/${plat.id}`)}
+                                className="mt-4 w-full bg-orange-600 text-white py-2 rounded hover:bg-orange-700 transition">
                                     Commander maintenant
                                 </button>
                             </div>
@@ -45,7 +47,7 @@ export default function Plats({ plats }: Props) {
                         ))}
                     </div>
                 </div>
-                //📍 Infos du restaurant & newsletter 
+                
                     <div className="bg-gray-100 p-6 rounded-lg shadow-md">
                         <h2 className="text-xl font-semibold text-gray-800 mb-2">Adresse du restaurant</h2>
                         <p className="text-gray-700 mb-4">
