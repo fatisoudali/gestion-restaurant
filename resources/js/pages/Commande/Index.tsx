@@ -63,6 +63,13 @@ export default function Index({ commandes, flash }: Props) {
                 <div className="flex justify-end">
                     <div className="flex items-center gap-2">
                         <Input type="text" placeholder="Rechercher une commande..." className="w-64" onChange={handleSearch} />
+                          <Link
+        href={route('commandes.create')}
+        className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+    >
+         Ajouter Commande
+    </Link>
+
                     </div>
                 </div>
 

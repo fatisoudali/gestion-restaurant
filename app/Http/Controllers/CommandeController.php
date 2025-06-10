@@ -46,18 +46,20 @@ class CommandeController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer|min:1',
-            'category_id' => 'required|exists:categories,id',
-        ]);
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'type' => 'required|string|in:sur place,à emporter',
+        'status' => 'required|string|in:en attente,servi',
+        'price' => 'required|numeric|min:0',
+        'numTable' => 'required|integer|min:1',
+    ]);
 
-        Commande::create($validated);
+    Commande::create($validated);
 
-        return redirect()->route('Commande.index')->with('success', 'Commande créée avec succès.');
-    }
+    return redirect()->route('Commande.index')->with('success', 'Commande créée avec succès.');
+}
+
 
     public function edit($id)
     {

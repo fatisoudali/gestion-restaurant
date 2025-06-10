@@ -45,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('categories', CategoryController::class);
     Route::resource('plats', PlatController::class);
+    route::resource('commande', CommandeController::class);
     
 
     Route::get('/clients', [ClientController::class, 'index'])->name('Client.index');
@@ -66,7 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/commande/{commande}', [CommandeController::class, 'update'])->name('commandes.update');
     Route::delete('/commande/{commande}', [CommandeController::class, 'destroy'])->name('commandes.destroy');
     Route::get('/commande/{commande}', [CommandeController::class, 'show'])->name('commandes.show');
-    Route::get('/commander/{plat}', [CommandeController::class, 'create'])->name('commander.create');
+    Route::get('/commande/{plat}', [CommandeController::class, 'create'])->name('commande.create');
     
 
     Route::get('/facture', [FactureController::class, 'index'])->name('Facture.index');
