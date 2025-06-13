@@ -57,8 +57,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/clients/{client}', [ClientController::class, 'update'])->name('clients.update');
     Route::delete('/clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
     
+    Route::post('/panier/ajouter', [PanierController::class, 'ajouter']);
     Route::get('/panier', [PanierController::class, 'index'])->name('panier.index');
-
+    Route::delete('/panier/{id}', [PanierController::class, 'destroy'])->name('panier.destroy');
+    
     Route::get('/commande', [CommandeController::class, 'index'])->name('Commande.index');
 
     Route::get('/comande/create', [CommandeController::class, 'create'])->name('commandes.create');
@@ -66,9 +68,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/commande/{commande}/edit', [CommandeController::class, 'edit'])->name('commandes.edit');
     Route::put('/commande/{commande}', [CommandeController::class, 'update'])->name('commandes.update');
     Route::delete('/commande/{commande}', [CommandeController::class, 'destroy'])->name('commandes.destroy');
-    Route::get('/commande/{commande}', [CommandeController::class, 'show'])->name('commandes.show');
+    Route::get('/commander/{id}', [CommandeController::class, 'show'])->name('commander.show');
     Route::get('/commande/{plat}', [CommandeController::class, 'create'])->name('commande.create');
-    
+    Route::post('/valider-commande', [CommandeController::class, 'valider']);
 
     Route::get('/facture', [FactureController::class, 'index'])->name('Facture.index');
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Commande;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\Plat;
+
 use Inertia\Inertia;
 
 class CommandeController extends Controller
@@ -26,13 +28,30 @@ class CommandeController extends Controller
             'commandes' => $commandes,
         ]);
     }
+    public function valider(Request $request)
+{
+    $request->validate([
+        'plat_id' => 'required|exists:plats,id',
+        'quantite' => 'required|integer|min:1',
+    ]);
+
+    // Exemple simple : sauvegarder la commande
+    $commande = new \App\Models\Commande();
+    $commande->plat_id = $request->plat_id;
+    $commande->quantite = $request->quantite;
+    $commande->user_id = auth()->id(); // si connecté
+    $commande->save();
+
+    return redirect()->route('Accueile')->with('success', 'Commande confirmée !');
+}
+
 
  public function Show ($id)
     {
-        $commandes= Commande::findOrFail($id);
+        $plat= plat::findOrFail($id);
 
         return Inertia::render('Commande/Show', [
-            'commandes' => $commandes,
+            'plat' => $plat,
         ]);
     }
     
